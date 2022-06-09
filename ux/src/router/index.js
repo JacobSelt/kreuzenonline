@@ -8,12 +8,16 @@ const router = createRouter({
       component: () => import('../views/HomeView.vue')
     },
     {
+      path: '/impressum',
+      component: () => import('../views/ImpressumView.vue')
+    },
+    {
       path: '/kontakt',
       component: () => import('../views/KontaktView.vue')
     },
     {
-      path: '/impressum',
-      component: () => import('../views/ImpressumView.vue')
+      path: '/login',
+      component: () => import('../views/LoginView.vue')
     },
     {
       path: '/kreuzen',
