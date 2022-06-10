@@ -1,0 +1,112 @@
+openapi: 3.0.0
+info:
+    title: Kreuzen API
+    description: A API between Vue Frontend and Django Backend.
+    version: 0.1.1
+servers:
+    - url: http://localhost
+    description: Optional server description, e.g. Main (production) server
+paths:
+    /question/{questionId}:
+        get:
+            tags:
+            - "question"
+            summary: "Finds Question by id"
+            description: "Multiple status values can be provided with comma separated strings"
+            operationId: "findQuestionById"
+            produces:
+            - "application/xml"
+            - "application/json"
+            parameters:
+            - name: "id"
+                in: "query"
+                description: "Status values that need to be considered for filter"
+                required: true
+                type: integer
+            responses:
+                "200":
+                description: "successful operation"
+                schema:
+                    type: "array"
+                    items:
+                        $ref: "#/components/schemas/Question"
+                "400":
+                description: "Invalid status value"
+            security:
+            # TODO
+
+components:
+    schema:
+        User:
+            type: object
+            properties:
+                id:
+                    type: integer
+                    format: int64
+                username:
+                    type: string
+                email:
+                    type: string
+                lastLogin:
+                    type: string #TODO
+                userStatus: 
+                    type: integer #TODO
+                    format: int32
+                    description: User Status
+            xml:
+                name: User
+        Question:
+            type: object
+            properties:
+                id:
+                    type: integer
+                    format: int64
+                createdBy:
+                    type: string #TODO -> point to User?
+                dateCreated:
+                    type: string
+                exam:
+                    type: string
+                isReported:
+                    type: boolean
+                reportedText:
+                    type: string
+                text:
+                    type: string
+                answer:
+                    type: array
+                    items:
+                        type: object
+                        properties:
+                            id:
+                                type: integer
+                                format: int32
+                            text:
+                                type: string
+                            true:
+                                type: boolean
+                    minitems: 1
+                    maxitems: 5
+        Session:
+            type: object
+            properties:
+                user:
+                    type: string #TODO -> point to User?
+                dateCreated:
+                    type: string
+                questions: 
+                    type: array
+                    items:
+                        type: object
+                        allOf:     
+                            - $ref: '#/components/schemas/Question'
+                            - type: object
+                                properties:
+                                    isViewed: 
+                                        type: boolean
+                                    isSolved: 
+                                        type: boolean
+                                    isSolvedCorrectly: 
+                                        type: boolean
+                                    dateSolved:
+                                        type: string
