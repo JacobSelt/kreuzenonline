@@ -3,7 +3,7 @@ import { RouterLink, RouterView } from 'vue-router'
 </script>
 
 <template>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="border-bottom: 1px solid #181818;">
     <div class="container-fluid hstack row ms-0">
       <RouterLink class="navbar-brand p-0 mx-2 col-auto" to="/">
         <img src="/logo.svg" height="55"> DEFI

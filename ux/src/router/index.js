@@ -28,8 +28,8 @@ const router = createRouter({
           component: () => import('../views/kreuzen/HomeView.vue')
         },
         {
-          path: 'admin',
-          component: ''
+          path: 'session/learn',
+          component: () => import('../views/kreuzen/SessionLearnView.vue')
         }
       ]
     }
