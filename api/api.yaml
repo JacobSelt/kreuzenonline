@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: Kreuzen API
-  description: A API between Vue Frontend and Django Backend.
+  description: An RESTful API between Vue Frontend and Django Backend.
   version: 1.0.0-oas3
 servers:
   - url: http://localhost
