@@ -1,0 +1,361 @@
+openapi: 3.0.0
+info:
+  title: Kreuzen API
+  description: A API between Vue Frontend and Django Backend.
+  version: 1.0.0-oas3
+servers:
+  - url: http://localhost
+    description: Optional server description, e.g. Main (production) server
+paths:
+  /question/{questionId}:
+    get:
+      tags:
+        - Question
+      summary: Gets Question by id
+      description: >
+        This resource represents an individual question in the system. Each
+        question is identified by a numeric `id`.
+      operationId: findQuestionById
+      parameters:
+        - in: path
+          name: questionId
+          description: Question ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Question"
+        "400":
+          description: Bad request. Question ID must be an integer and larger than 0.
+        "401":
+          description: Authorization information is missing or invalid.
+        "404":
+          description: A question with the specified ID was not found.
+        5XX:
+          description: Unexpected error.
+      security: null
+    put:
+      tags:
+        - Question
+      summary: Update a Question
+      parameters:
+        - in: path
+          name: questionId
+          description: Question ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Question"
+      responses:
+        "201":
+          description: Created
+        "400":
+          description: Failed to create User
+  /question:
+    post:
+      tags:
+        - Question
+      summary: Adds a new Question
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Question"
+      responses:
+        "201":
+          description: Created
+  /user/{userId}:
+    get:
+      tags:
+        - User
+      summary: Gets User by id
+      description: >
+        This resource represents an individual user in the system. Each user is
+        identified by a numeric `id`.
+      operationId: findUserById
+      parameters:
+        - in: path
+          name: userId
+          description: User ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "400":
+          description: Bad request. User ID must be an integer and larger than 0.
+        "401":
+          description: Authorization information is missing or invalid.
+        "404":
+          description: An user with the specified ID was not found.
+        5XX:
+          description: Unexpected error.
+      security: null
+    put:
+      tags:
+        - User
+      summary: Update an User
+      parameters:
+        - in: path
+          name: userId
+          description: User ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+      responses:
+        "201":
+          description: Created
+  /user:
+    post:
+      tags:
+        - User
+      summary: Add a new User
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+      responses:
+        "201":
+          description: Created
+  /session/{sessionId}:
+    get:
+      tags:
+        - Session
+      summary: Gets Session by id
+      description: >
+        This resource represents an individual Session in the system. Each
+        Session is identified by a numeric `id`.
+      operationId: findSessionById
+      parameters:
+        - in: path
+          name: sessionId
+          description: Session ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "400":
+          description: Invalid status value
+      security: null
+  /tags/{subjectID}:
+    get:
+      tags:
+        - Tags
+      summary: Gets all Tags by the Subject ID
+      operationId: findTagsBySubjectID
+      parameters:
+        - in: path
+          name: subjectID
+          description: Subject ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Tag"
+        "400":
+          description: Bad request. Subject ID must be an integer and larger than 0.
+        "401":
+          description: Authorization information is missing or invalid.
+        "404":
+          description: An subject with the specified ID was not found.
+        5XX:
+          description: Unexpected error.
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        username:
+          type: string
+        email:
+          type: string
+        lastLogin:
+          type: string
+        semester:
+          type: integer
+        course:
+          type: string
+          description: Zahnmedizin or Humanmedizin
+        userStatus:
+          type: integer
+          format: int32
+          description: User Status
+      xml:
+        name: User
+    Question:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        createdBy:
+          type: string
+        dateCreated:
+          type: string
+        isApproved:
+          type: boolean
+        approvedBy:
+          type: string
+        examName:
+          type: string
+        examSemester:
+          type: string
+        isReported:
+          type: boolean
+        reportedText:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+        text:
+          type: string
+        answer:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                format: int32
+              text:
+                type: string
+              isTrue:
+                type: boolean
+              frequency:
+                type: integer
+                format: float
+                description: How often users chose this answer
+          minItems: 1
+          maxItems: 5
+        imageLink:
+          type: string
+    Session:
+      type: object
+      properties:
+        id:
+          type: integer
+        user:
+          type: string
+        name:
+          type: string
+        dateCreated:
+          type: string
+        isRandomOrder:
+          type: boolean
+          description: Questions appear in random order
+        isExamMode:
+          type: boolean
+          description: True if user doesn't want to the results straight away
+        isFinished:
+          type: boolean
+        timeLearned:
+          type: integer
+          format: float
+          description: Time the user has spent learning the session
+        questions:
+          type: array
+          items:
+            type: object
+            allOf:
+              - $ref: "#/components/schemas/Question"
+              - type: object
+                properties:
+                  isViewed:
+                    type: boolean
+                  isSolved:
+                    type: boolean
+                  isSolvedCorrectly:
+                    type: boolean
+                  dateSolved:
+                    type: string
+                  timeSpent:
+                    type: integer
+                    format: float
+    Collection:
+      type: object
+      properties:
+        id:
+          type: integer
+        user:
+          type: string
+        name:
+          type: string
+        dateCreated:
+          type: string
+        questions:
+          type: array
+          items:
+            type: object
+            allOf:
+              - $ref: "#/components/schemas/Question"
+    Tag:
+      type: object
+      properties:
+        name:
+          type: string
+        subject:
+          type: string
+          description: For example "Radiologie" or "Chirurgie"
+    Exam:
+      type: object
+      properties:
+        semester:
+          type: string
+        subject:
+          type: string
+        dateOfExam:
+          type: string
+        name:
+          type: string
+    Subject:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
