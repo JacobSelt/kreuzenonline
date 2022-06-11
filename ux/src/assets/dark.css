@@ -1,0 +1,18 @@
+/*
+#343A40 -> gray-800
+#2E3338 -> gray-833
+#272C31 -> gray-867
+#212529 -> gray-900
+*/
+
+:root {
+  --color-main: #212529;
+  --color-second: #272c31;
+  --color-contrast: #f8f9fa;
+  --color-border: #181818;
+
+  --color-green: #198754;
+  --color-green-50: #1987547e;
+  --color-red: #dc3545;
+  --color-red-50: #dc35457e;
+}
