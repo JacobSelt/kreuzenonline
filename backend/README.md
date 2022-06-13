@@ -1,4 +1,4 @@
-## Installation of Postgres and Django
+## Installation of Postgres
 
 ### Instllation Of Postgresql For Linux: 
 
@@ -19,16 +19,19 @@ CREATE USER djangouser WITH PASSWORD '???????';
 
 In order to speed up Django and Postgres
 ```sh
-ALTER ROLE myprojectuser SET client_encoding TO 'utf8';
-ALTER ROLE myprojectuser SET default_transaction_isolation TO 'read committed';
-ALTER ROLE myprojectuser SET timezone TO 'UTC';
+ALTER ROLE kreuzenonline SET client_encoding TO 'utf8';
+ALTER ROLE kreuzenonline SET default_transaction_isolation TO 'read committed';
+ALTER ROLE kreuzenonline SET timezone TO 'UTC';
 ```
 
 At the end log out: \q
 ```sh
-GRANT ALL PRIVILEGES ON DATABASE myproject TO myprojectuser;
+GRANT ALL PRIVILEGES ON DATABASE kreuzenonline TO djangouser;
 \q
 ```
+
+You have to put the Django Secret Key and Postgres db name, user and password in .env file, like specified in .env.example
+There is a tutorial about the .env file: https://alicecampkin.medium.com/how-to-set-up-environment-variables-in-django-f3c4db78c55f
 
 Change database settings according to your password and username
 
@@ -43,7 +46,7 @@ Please look up tutorials.
 ```sh
 python -m venv env
 source env/bin/activate
-pip install requirements.txt
+pip install -r requirements.txt
 ```
 
 ## Starting with Django
