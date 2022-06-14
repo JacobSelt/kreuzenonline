@@ -39,7 +39,6 @@ paths:
           description: A question with the specified ID was not found.
         5XX:
           description: Unexpected error.
-      security: null
     put:
       tags:
         - Question
@@ -61,8 +60,25 @@ paths:
       responses:
         "201":
           description: Created
-        "400":
-          description: Failed to create User
+        "403":
+          description: Failed to create Question
+    delete:
+      tags:
+        - Question
+      summary: Deletes a Question
+      parameters:
+        - in: path
+          name: questionId
+          description: Question ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "201":
+          description: Deleted
+        "403":
+          description: Failed to delete Question
   /question:
     post:
       tags:
@@ -77,6 +93,8 @@ paths:
       responses:
         "201":
           description: Created
+        "403":
+          description: Failed to create Question
   /user/{userId}:
     get:
       tags:
@@ -109,7 +127,6 @@ paths:
           description: An user with the specified ID was not found.
         5XX:
           description: Unexpected error.
-      security: null
     put:
       tags:
         - User
@@ -171,7 +188,42 @@ paths:
                 $ref: "#/components/schemas/User"
         "400":
           description: Invalid status value
-      security: null
+  /session:
+    post:
+      tags:
+        - Session
+      summary: Adds a new Session
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                user:
+                  type: string
+                name:
+                  type: string
+                dateCreated:
+                  type: string
+                isRandomOrder:
+                  type: boolean
+                  description: Questions appear in random order
+                isExamMode:
+                  type: boolean
+                  description: True if user doesn't want to the results straight away
+                questionsID:
+                  type: array
+                  items:
+                    type: integer
+      responses:
+        "201":
+          description: Created
+        "403":
+          description: Failed to create Session
+
   /tags/{subjectID}:
     get:
       tags:
@@ -202,6 +254,11 @@ paths:
         5XX:
           description: Unexpected error.
 components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
   schemas:
     User:
       type: object
@@ -218,8 +275,8 @@ components:
         semester:
           type: integer
         course:
-          type: string
-          description: Zahnmedizin or Humanmedizin
+          type: int
+          description: Humanmed. - 0, Zahnmed. - 1, both - 2
         userStatus:
           type: integer
           format: int32
@@ -359,3 +416,5 @@ components:
           type: integer
         name:
           type: string
+security:
+  - bearerAuth: []
