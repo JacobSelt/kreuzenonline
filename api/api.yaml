@@ -148,6 +148,36 @@ paths:
       responses:
         "201":
           description: Created
+  /user/{userId}/sessions:
+    get:
+      tags:
+        - Session
+      summary: Gets Sessions by User ID
+      description: >
+        This resource represents an individual Session in the system. Each
+        Session is identified by a numeric `id`.
+      operationId: findUserSessionById
+      parameters:
+        - in: path
+          name: userId
+          description: User ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  allOf:
+                    - $ref: "#/components/schemas/Session"
+        "400":
+          description: Invalid status value
   /user:
     post:
       tags:
@@ -188,6 +218,27 @@ paths:
                 $ref: "#/components/schemas/User"
         "400":
           description: Invalid status value
+    put:
+      tags:
+        - Session
+      summary: Update a Session
+      parameters:
+        - in: path
+          name: sessionId
+          description: Session ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Session"
+      responses:
+        "201":
+          description: Created
   /session:
     post:
       tags:
@@ -223,7 +274,6 @@ paths:
           description: Created
         "403":
           description: Failed to create Session
-
   /tags/{subjectID}:
     get:
       tags:
@@ -275,7 +325,7 @@ components:
         semester:
           type: integer
         course:
-          type: int
+          type: integer
           description: Humanmed. - 0, Zahnmed. - 1, both - 2
         userStatus:
           type: integer
